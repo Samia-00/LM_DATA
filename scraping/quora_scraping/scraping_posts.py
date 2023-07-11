@@ -84,6 +84,7 @@ class QuoraPostsURLScraper:
         data = {}
 
         post_url_selector = '.TitleText___StyledCssInlineComponent-sc-1hpb63h-0 a'
+        # post_url_selector = '.answer_timestamp'
         data['post_url'] = post.find_element(By.CSS_SELECTOR, post_url_selector).get_attribute('href')
 
         if data['post_url'] in self.existing_posts_url:
