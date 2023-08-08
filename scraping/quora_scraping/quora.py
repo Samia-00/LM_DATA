@@ -40,7 +40,7 @@ def main():
                 break
 
             posts_data = quora_posts_url_scraper.get_posts_url(driver)
-            for post in posts_data:
+            for post in posts_data[:5]:
                 quora_posts_data_scraper.get_posts_data(driver, post)
 
             quora_posts_url_scraper.click_to_load_new_posts(driver)

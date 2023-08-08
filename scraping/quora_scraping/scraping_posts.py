@@ -42,7 +42,7 @@ class QuoraPostsDataScraper:
         return is_page_not_found
 
     def get_posts_data(self, driver, post):
-        driver.get(post['post_url'])
+        driver.get(post["post_url"])
         is_page_not_found = self.check_page_not_found(driver)
 
         if is_page_not_found:
@@ -83,10 +83,14 @@ class QuoraPostsURLScraper:
     def scrape_post_url_time_question(self, post):
         data = {}
 
-        post_url_selector = '.TitleText___StyledCssInlineComponent-sc-1hpb63h-0 a'
+
+        # post_url_selector = '.TitleText___StyledCssInlineComponent-sc-1hpb63h-0 a'
+        post_url_selector = '.q-box.Link___StyledBox-t2xg9c-0.dFkjrQ.answer_timestamp.qu-cursor--pointer.qu-hover--textDecoration--underline'
+        # post_url_selector = 'a.q-box'
         # post_url_selector = '.answer_timestamp'
         data['post_url'] = post.find_element(By.CSS_SELECTOR, post_url_selector).get_attribute('href')
-
+        print(post.get_attribute("innerHTML"))
+        print(data['post_url'])
         if data['post_url'] in self.existing_posts_url:
             return False
 
@@ -149,9 +153,11 @@ class QuoraPostsURLScraper:
 
     def click_to_load_new_posts(self, driver):
         try:
-            feed_last_selector = '#mainContent .qu-color--white .qu-whiteSpace--nowrap'
+            # feed_last_selector = '#mainContent .qu-color--white .qu-whiteSpace--nowrap [role="button"]'
+            # feed_last_selector = '.qu-color--white .qu-whiteSpace--nowrap[role="button"]'
+            feed_last_selector = '.q-box .qu-bg--blue.qu-tapHighlight--white.qu-textAlign--center.qu-cursor--pointer .qu-whiteSpace--nowrap'
             refresh_btn = driver.find_element(By.CSS_SELECTOR, feed_last_selector)
             self.helpers.click_to_btn_js(driver, refresh_btn)
         except Exception as e:
             self.error_logger.logger.exception(e)
-
+            print('testing')
