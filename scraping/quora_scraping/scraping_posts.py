@@ -1,3 +1,4 @@
+import os
 import time
 from telnetlib import EC
 import pendulum
@@ -23,6 +24,7 @@ class QuoraPostsDataScraper:
         self.count_unable_to_scrape = 0
         self.this_filename = '_'.join(__file__.split('/')[-2:])[:-3]
         self.error_logger = ErrorLogger(self.this_filename)
+        os.makedirs(DIR_REPORT, exist_ok=True)
     def check_page_not_found(self, driver):
 
         is_page_not_found = False
@@ -92,8 +94,8 @@ class QuoraPostsURLScraper:
         # post_url_selector = '.answer_timestamp'
 
         data['post_url'] = post.find_element(By.CSS_SELECTOR, post_url_selector).get_attribute('href').split('/answers/')[0]
-        print(post.get_attribute("innerHTML"))
-        print(data['post_url'])
+        # print(post.get_attribute("innerHTML"))
+        # print(data['post_url'])
         if data['post_url'] in self.existing_posts_url:
             return False
 
