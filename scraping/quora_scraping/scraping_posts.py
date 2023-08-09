@@ -24,6 +24,7 @@ class QuoraPostsDataScraper:
         self.count_unable_to_scrape = 0
         self.this_filename = '_'.join(__file__.split('/')[-2:])[:-3]
         self.error_logger = ErrorLogger(self.this_filename)
+        os.makedirs(DIR_REPORT, exist_ok=True)
     def check_page_not_found(self, driver):
 
         is_page_not_found = False
@@ -43,11 +44,15 @@ class QuoraPostsDataScraper:
         return is_page_not_found
 
     def get_posts_data(self, driver, post):
+<<<<<<< HEAD
         driver.get(post['post_url'])
 
         # click to ans
         details_ans_btn =  driver.find_element(By.CSS_SELECTOR, '.q-box.qu-color--gray .qu-dynamicFontSize--button')
         self.helpers.click_to_btn_js(driver, details_ans_btn)
+=======
+        driver.get(post["post_url"])
+>>>>>>> master
         is_page_not_found = self.check_page_not_found(driver)
 
         if is_page_not_found:
@@ -68,7 +73,10 @@ class QuoraPostsDataScraper:
         id = self.data_writer.save_data_to_collection(COLLECTION_NAME_SCRAPED_DATA, post)
         self.count_saved+=1
 
+<<<<<<< HEAD
         os.makedirs(DIR_REPORT, exist_ok=True)
+=======
+>>>>>>> master
         with open(f'{DIR_REPORT}{FILE_LOG}', 'a') as file:
             try:
                 print(f'{post["scraped_at"].strftime("%Y-%m-%d %H:%M:%S")} : {self.count_saved}. {post["question"]}')
@@ -89,9 +97,23 @@ class QuoraPostsURLScraper:
     def scrape_post_url_time_question(self, post):
         data = {}
 
+<<<<<<< HEAD
         post_url_selector = '.answer_timestamp'
         data['post_url'] = post.find_element(By.CSS_SELECTOR, post_url_selector).get_attribute('href')
 
+=======
+
+        # post_url_selector = '.TitleText___StyledCssInlineComponent-sc-1hpb63h-0 a'
+        post_url_selector = '.q-box.Link___StyledBox-t2xg9c-0.dFkjrQ.answer_timestamp.qu-cursor--pointer.qu-hover--textDecoration--underline'
+        # post_url_selector_data = post_url_selector.split('/answers/')
+        # print(post_url_selector_data)
+        # post_url_selector = 'a.q-box'
+        # post_url_selector = '.answer_timestamp'
+
+        data['post_url'] = post.find_element(By.CSS_SELECTOR, post_url_selector).get_attribute('href').split('/answers/')[0]
+        # print(post.get_attribute("innerHTML"))
+        # print(data['post_url'])
+>>>>>>> master
         if data['post_url'] in self.existing_posts_url:
             return False
 
@@ -154,9 +176,30 @@ class QuoraPostsURLScraper:
 
     def click_to_load_new_posts(self, driver):
         try:
+<<<<<<< HEAD
             feed_last_selector = '#mainContent .qu-color--white .qu-whiteSpace--nowrap'
             refresh_btn = driver.find_element(By.CSS_SELECTOR, feed_last_selector)
             self.helpers.click_to_btn_js(driver, refresh_btn)
         except Exception as e:
             self.error_logger.logger.exception(e)
 
+=======
+            button_element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, '//button[contains(text(), "পৃষ্ঠাটি রিফ্রেশ করুন")]'))
+            )
+            self.helpers.click_to_btn_js(driver, button_element)
+        except Exception as e:
+            print("Error:", e)
+
+
+        # try:
+        #     # feed_last_selector = '#mainContent .qu-color--white .qu-whiteSpace--nowrap [role="button"]'
+        #     # feed_last_selector = '.qu-color--white .qu-whiteSpace--nowrap[role="button"]'
+        #     # feed_last_selector = '.q-box .qu-bg--blue.qu-tapHighlight--white.qu-textAlign--center.qu-cursor--pointer .qu-whiteSpace--nowrap'
+        #     feed_last_selector = 'button.q-click-wrapper'
+        #     refresh_btn = driver.find_element(By.CSS_SELECTOR, feed_last_selector)
+        #     self.helpers.click_to_btn_js(driver, refresh_btn)
+        # except Exception as e:
+        #     self.error_logger.logger.exception(e)
+        #     print('testing')
+>>>>>>> master

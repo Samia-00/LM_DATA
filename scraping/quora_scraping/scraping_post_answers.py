@@ -25,8 +25,10 @@ class QuoraPostsAnsScraper:
             except NoSuchElementException as e:
                 self.helpers.scroll_to_bottom_js(driver, DELAY_SHORT)
                 faild_count+=1
+
             if faild_count>FAILD_TOLERATE_RELATED_QUESTION:
                 break
+
         return related_ques
 
     def click_read_more(self, driver):
@@ -44,6 +46,14 @@ class QuoraPostsAnsScraper:
         return post_details_data
 
     def get_posts_ans(self, driver):
+        posts_ans_selector = '.q-box qu-userSelect--text'.replace(' ', '.')
+        related_ques = self.scrape_related_ques(driver, posts_ans_selector)
+        self.click_read_more(driver)
+        post_details_data = self.scrape_posts_ans_text(driver, posts_ans_selector)
+        return post_details_data
+
+    def get_posts_ans(self, driver):
+
         posts_ans_selector = '.q-box qu-userSelect--text'.replace(' ', '.')
         related_ques = self.scrape_related_ques(driver, posts_ans_selector)
         self.click_read_more(driver)
