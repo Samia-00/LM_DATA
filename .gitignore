@@ -6,7 +6,7 @@ chromedriver_linux64/
 *.pyc
 ERROR/
 REPORT/
-cookies.pkl
+
 test.py
 test.html
 test.txt
